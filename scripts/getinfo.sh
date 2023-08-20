@@ -1,6 +1,8 @@
 #!/bin/bash
 SYSTEMDIR="$1"
 
+date=$(date -u -d '+8 hour' '+%Y.%m.%d_%H.%M.%S')
+
 flavor=$(grep -oP "(?<=^ro.build.flavor=).*" -hs "$SYSTEMDIR"/build*.prop)
 [[ -z "${flavor}" ]] && flavor=$(grep -oP "(?<=^ro.system.build.flavor=).*" -hs "$SYSTEMDIR"/build*.prop)
 [[ -z "${flavor}" ]] && flavor=$(grep -oP "(?<=^ro.build.type=).*" -hs "$SYSTEMDIR"/build*.prop)
@@ -24,19 +26,17 @@ codename=$(grep -oP "(?<=^ro.product.device=).*" -hs "$SYSTEMDIR"/build*.prop | 
 [[ -z "${codename}" ]] && codename=$(echo $fingerprint | cut -d / -f3 | cut -d : -f1 )
 [[ -z "${codename}" ]] && codename=$(grep -oP "(?<=^ro.build.fota.version=).*" -hs "$SYSTEMDIR"/build*.prop | cut -d - -f1 | head -1)
 spl=$(grep -oP "(?<=^ro.build.version.security_patch=).*" -hs "$SYSTEMDIR"/build*.prop | head -1)
-description=$(grep -oP "(?<=^ro.build.description=).*" -hs "$SYSTEMDIR"/build*.prop)
-[[ -z "${description}" ]] && description=$(grep -oP "(?<=^ro.system.build.description=).*" -hs "$SYSTEMDIR"/build*.prop)
-[[ -z "${description}" ]] && description="$flavor $release $id $incremental $tags"
 
-printf "Android Version: $release
-Brand: $brand
-Model: $model
-Codename: $codename
-Build Type: $flavor
-Build Number: $id
-Incremental: $incremental
-Tags: $tags
-Security Patch: $spl
-Fingerprint: $fingerprint
-Description: $description
+
+printf "Android 版本: $release
+品牌: $brand
+机型: $model
+机型代号: $codename
+构建类型: $flavor
+构建 ID: $id
+增量 OTA 信息: $incremental
+安全补丁日期: $spl
+构建指纹信息: $fingerprint
+构建标签: $tags
+自动构建日期：$date
 "
