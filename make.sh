@@ -58,14 +58,7 @@ if [ "$flag" == "false" ]; then
     echo "AB"
     echo "Aonly"
     exit 1
-fi
-
-# Setup source system partition
-systempath=$sourcepath
-if [[ -e "$sourcepath/mounted.txt" ]]; then
-    systempath=$sourcepath/system
-fi
-
+    
 # Detect Source type, AB or not
 sourcetype="Aonly"
 if [[ -e "$sourcepath/system" ]]; then
