@@ -115,7 +115,15 @@ else
     sed -i "/ro.build.system_root_image/d" "$systemdir/system/build.prop"
     sed -i "/ro.build.ab_update/d" "$systemdir/system/build.prop"
     echo "ro.build.system_root_image=true" >> "$systemdir/system/build.prop"
-    
+fi
+
+# Detect is the src treble ro.treble.enabled=true
+istreble=`cat $systemdir/system/build.prop | grep ro.treble.enabled | cut -d "=" -f 2`
+if [[ ! "$istreble" == "true" ]]; then
+    echo "The source is not treble supported"
+    exit 1
+fi
+
 # Detect Source API level
 if grep -q ro.build.version.release_or_codename $systemdir/system/build.prop; then
     sourcever=`grep ro.build.version.release_or_codename $systemdir/system/build.prop | cut -d "=" -f 2`
