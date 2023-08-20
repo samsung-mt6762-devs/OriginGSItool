@@ -252,7 +252,7 @@ echo "Raw Image Size: $(bytesToHuman $systemsize)" >> "$outputinfo"
 
 echo "Creating Image: $outputimagename"
 # Use ext4fs to make image in P or older!
-if [ "$sourcever" == "9" ]; then
+if [ "$sourcever" == "14" ]; then
     useold="--old"
 fi
 $scriptsdir/mkimage.sh $systemdir $outputtype $systemsize $output $useold > $tempdir/mkimage.log
