@@ -98,10 +98,6 @@ if [ "$sourcetype" == "Aonly" ]; then
 else
     echo "Making copy of source rom to temp"
     ( cd "$systempath" ; sudo tar cf - . ) | ( cd "$systemdir" ; sudo tar xf - )
-    if [[ -e "$sourcepath/mounted.txt" ]]; then
-        for p in `cat "$sourcepath/mounted.txt"`; do
-            [[ $p = system ]] && continue
-            [[ $p = vendor ]] && continue
             if [[ -L "$systemdir/system/$p" ]]; then
                 rm -rf "$systemdir/system/$p"
                 mkdir "$systemdir/system/$p"
