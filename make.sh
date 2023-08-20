@@ -58,7 +58,14 @@ if [ "$flag" == "false" ]; then
     echo "AB"
     echo "Aonly"
     exit 1
-    
+fi
+
+# Setup source system partition
+systempath=$sourcepath
+if [[ -e "$sourcepath/mounted.txt" ]]; then
+    systempath=$sourcepath/system
+fi
+
 # Detect Source type, AB or not
 sourcetype="Aonly"
 if [[ -e "$sourcepath/system" ]]; then
@@ -76,6 +83,7 @@ scriptsdir="$LOCALDIR/scripts"
 echo "Create Temp dir"
 rm -rf $tempdir
 mkdir -p "$systemdir"
+rm -rf mi_ext.img
 
 if [ "$sourcetype" == "Aonly" ]; then
     echo "Warning: Aonly source detected, using P AOSP ramdisk"
@@ -91,6 +99,10 @@ if [ "$sourcetype" == "Aonly" ]; then
 else
     echo "Making copy of source rom to temp"
     ( cd "$systempath" ; sudo tar cf - . ) | ( cd "$systemdir" ; sudo tar xf - )
+    if [[ -e "$sourcepath/mounted.txt" ]]; then
+        for p in `cat "$sourcepath/mounted.txt"`; do
+            [[ $p = system ]] && continue
+            [[ $p = vendor ]] && continue
             if [[ -L "$systemdir/system/$p" ]]; then
                 rm -rf "$systemdir/system/$p"
                 mkdir "$systemdir/system/$p"
@@ -128,6 +140,8 @@ case "$sourcever" in
     *"10"*) flag=true ;;
     *"11"*) flag=true ;;
     *"12"*) flag=true ;;
+    *"13"*) flag=true ;;
+    *"UpsideDownCake"*) flag=true ;;
 esac
 if [ "$flag" == "false" ]; then
     echo "$sourcever is not supported"
@@ -199,9 +213,9 @@ if [ "$outputtype" == "Aonly" ]; then
 fi
 
 date=`date +%Y%m%d`
-outputname="$romtypename-$outputtype-$sourcever-$date-ErfanGSI"
+outputname="$romtypename-$outputtype-$sourcever-$date-ErfanGSI-tosasitill"
 outputimagename="$outputname".img
-outputtextname="$outputname".txt
+outputtextname=build_info.txt
 if [ "$4" == "" ]; then
     echo "Create out dir"
     outdirname="out"
@@ -226,6 +240,28 @@ displayid2=$(echo "$displayid" | sed 's/\./\\./g')
 bdisplay=$(grep "$displayid" $systemdir/system/build.prop | sed 's/\./\\./g; s:/:\\/:g; s/\,/\\,/g; s/\ /\\ /g')
 sed -i "s/$bdisplay/$displayid2=Built\.with\.ErfanGSI\.Tools/" $systemdir/system/build.prop
 
+
+  # 为所有rom删除qti_permissions
+find $systemdir -type f -name "qti_permissions.xml" | xargs rm -rf
+
+sed -i '/media.settings.xml/d' $systemdir/build.prop
+find $systemdir -type d -name "firmware" | xargs rm -rf
+find $systemdir -type d -name "avb" | xargs rm -rf
+
+  # 为所有rom删除firmware
+find $systemdir -type d -name "firmware" | xargs rm -rf
+
+  # 为所有rom删除avb
+find $systemdir -type d -name "avb" | xargs rm -rf
+  
+  # 为所有rom删除com.qualcomm.location
+find $systemdir -type d -name "com.qualcomm.location" | xargs rm -rf
+
+  # 为所有rom删除多余文件
+rm -rf ./out/system/verity_key
+rm -rf ./out/system/init.recovery*
+rm -rf $systemdir/recovery-from-boot.*
+
 # Getting system size and add approximately 5% on it just for free space
 systemsize=`du -sk $systemdir | awk '{$1*=1024;$1=int($1*1.05);printf $1}'`
 bytesToHuman() {
@@ -237,11 +273,13 @@ bytesToHuman() {
     done
     echo "$b$d ${S[$s]}"
 }
-echo "Raw Image Size: $(bytesToHuman $systemsize)" >> "$outputinfo"
+echo "原镜像合并后大小: $(bytesToHuman $systemsize)" >> "$outputinfo"
+echo "构建 ROM 类型：$romtype" >> "$outputinfo"
+echo "--------Be redesigned by tosasitill 0202 & 0227--------" >> "$outputinfo"
 
 echo "Creating Image: $outputimagename"
 # Use ext4fs to make image in P or older!
-if [ "$sourcever" == "14" ]; then
+if [ "$sourcever" == "9" ]; then
     useold="--old"
 fi
 $scriptsdir/mkimage.sh $systemdir $outputtype $systemsize $output $useold > $tempdir/mkimage.log
