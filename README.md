@@ -1,5 +1,5 @@
 ## Requirements
-    Linux or Mac
+    Linux, WSL or Mac
 
 ## Released GSIs
 Download links: https://mirrors.lolinet.com/firmware/gsi/  
