@@ -11,8 +11,8 @@ Telegram channel: https://t.me/ErfanGSI
 
 ### Download tools
 ```
-git clone --recurse-submodules https://github.com/Dachoni03/ErfanGSIs.git
-cd ErfanGSIs
+git clone --recurse-submodules https://github.com/Dachoni03/RakijaGSIs
+cd RakijaGSIs
 ```
 
 ### For setting up requirements
