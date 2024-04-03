@@ -93,9 +93,9 @@ if [ "$sourcetype" == "Aonly" ]; then
     echo "Making copy of source rom to temp"
     ( cd "$systempath" ; sudo tar cf - . ) | ( cd "$systemdir/system" ; sudo tar xf - )
     cd "$LOCALDIR"
-    sed -i "/ro.build.system_root_image/d" "$systemdir/system/build.prop"
-    sed -i "/ro.build.ab_update/d" "$systemdir/system/build.prop"
-    echo "ro.build.system_root_image=false" >> "$systemdir/system/build.prop"
+    sed -i "/ro.build.system_root_image/d" "$systemdir/system/system/build.prop"
+    sed -i "/ro.build.ab_update/d" "$systemdir/system/system/build.prop"
+    echo "ro.build.system_root_image=false" >> "$systemdir/system/system/build.prop"
 else
     echo "Making copy of source rom to temp"
     ( cd "$systempath" ; sudo tar cf - . ) | ( cd "$systemdir" ; sudo tar xf - )
@@ -114,12 +114,12 @@ else
     fi
     cd "$LOCALDIR"
     sed -i "/ro.build.system_root_image/d" "$systemdir/system/build.prop"
-    sed -i "/ro.build.ab_update/d" "$systemdir/system/build.prop"
-    echo "ro.build.system_root_image=true" >> "$systemdir/system/build.prop"
+    sed -i "/ro.build.ab_update/d" "$systemdir/system/system/build.prop"
+    echo "ro.build.system_root_image=true" >> "$systemdir/system/system/build.prop"
 fi
 
 # Detect is the src treble ro.treble.enabled=true
-istreble=`cat $systemdir/system/build.prop | grep ro.treble.enabled | cut -d "=" -f 2`
+istreble=`cat $systemdir/system/system/build.prop | grep ro.treble.enabled | cut -d "=" -f 2`
 if [[ ! "$istreble" == "true" ]]; then
     echo "The source is not treble supported"
     exit 1
