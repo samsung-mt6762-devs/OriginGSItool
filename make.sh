@@ -153,10 +153,6 @@ if [[ ! -f "$systemdir/system/lib64/libandroid.so" ]]; then
     # do something here?
 fi
 
-# Debloat
-$romsdir/$sourcever/$romtype/debloat.sh "$systemdir/system" 2>/dev/null
-$romsdir/$sourcever/$romtype/$romtypename/debloat.sh "$systemdir/system" 2>/dev/null
-
 # Resign to AOSP keys
 if [[ ! -e $romsdir/$sourcever/$romtype/$romtypename/DONTRESIGN ]]; then
     if [[ ! -e $romsdir/$sourcever/$romtype/DONTRESIGN ]]; then
