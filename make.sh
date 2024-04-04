@@ -103,12 +103,12 @@ else
         for p in `cat "$sourcepath/mounted.txt"`; do
             [[ $p = system ]] && continue
             [[ $p = vendor ]] && continue
-            if [[ -L "$systemdir/system/system$p" ]]; then
-                rm -rf "$systemdir/system/system$p"
-                mkdir "$systemdir/system/system$p"
+            if [[ -L "$systemdir/system/$p" ]]; then
+                rm -rf "$systemdir/system/$p"
+                mkdir "$systemdir/system/$p"
                 rm -rf "$systemdir/$p"
-                ln -s "/system/system$p" "$systemdir/$p"
-                ( cd "$sourcepath/$p" ; sudo tar cf - . ) | ( cd "$systemdir/system/system$p" ; sudo tar xf - )
+                ln -s "/system/$p" "$systemdir/$p"
+                ( cd "$sourcepath/$p" ; sudo tar cf - . ) | ( cd "$systemdir/system/$p" ; sudo tar xf - )
             fi
         done
     fi
