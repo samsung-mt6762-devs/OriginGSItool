@@ -5,7 +5,8 @@
 Download links: https://mirrors.lolinet.com/firmware/gsi/  
 XDA thread: https://forum.xda-developers.com/project-treble/trebleenabled-device-development/pie-erfan-gsi-ports-t3906486  
 Telegram group: https://t.me/ErfanGSIs  
-Telegram channel: https://t.me/ErfanGSI  
+Telegram channel: https://t.me/ErfanGSI
+- Outdated
 
 ## How to use
 
