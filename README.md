@@ -8,7 +8,7 @@ Install pre-built GSI from here: https://t.me/OfficialOriginGSI
 
 ### Download tools
 ```
-git clone --recurse-submodules https://github.com/origings/OriginGSItool
+git clone --recurse-submodules https://github.com/origingsi/OriginGSItool
 cd OriginGSItool
 ```
 
