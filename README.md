@@ -8,8 +8,8 @@ Install pre-built GSI from here: https://t.me/OfficialOriginGSI
 
 ### Download tools
 ```
-git clone --recurse-submodules https://github.com/Dachoni03/RakijaGSIs
-cd RakijaGSIs
+git clone --recurse-submodules https://github.com/origings/OriginGSItool
+cd OriginGSItool
 ```
 
 ### For setting up requirements
